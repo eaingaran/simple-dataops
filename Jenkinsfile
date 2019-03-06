@@ -36,7 +36,7 @@ pipeline {
         stage('ArchiveUpload') {
             steps {
                 echo 'Deploying tar file to artifactory....'
-                sh 'curl -uadmin:AP3FBGSctQB7PMkRdHSypbQjuVB -T devops-0.0.1.${BUILD_ID}.tar.gz "http://34.219.211.33:8081/artifactory/libs-snapshot-local/xyz/aingaran/dataops/devops-0.0.1.${BUILD_ID}.tar.gz"'
+                sh 'curl -uadmin:AP3FBGSctQB7PMkRdHSypbQjuVB -T sample-devops-0.0.1.${BUILD_ID}.tar.gz "http://34.219.211.33:8081/artifactory/libs-snapshot-local/xyz/aingaran/dataops/sample-devops-0.0.1.${BUILD_ID}.tar.gz"'
                 script {
                     try {
                         sh 'mvn deploy:deploy-file -DpomFile=pom.xml \
