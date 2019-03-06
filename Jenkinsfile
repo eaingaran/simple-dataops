@@ -45,7 +45,7 @@ pipeline {
                               -Durl=http://34.219.211.33:8081/artifactory/libs-snapshot-local/ \
                               -Dpackaging=tar.gz'
                     } catch(Exception e)    {
-                        echo e
+                        //echo e
                         echo 'couldnt upload via maven deploy'
                     }
                 }
