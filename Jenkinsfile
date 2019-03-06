@@ -39,7 +39,7 @@ pipeline {
                 sh 'mvn deploy:deploy-file -DpomFile=pom.xml \
                       -Dfile=sample-devops-0.0.1.${BUILD_ID}.tar.gz \
                       -DrepositoryId=central \
-                      -Durl=http://34.219.211.33:8081/artifactory'
+                      -Durl=http://34.219.211.33:8081/artifactory/libs-snapshot-local/'
             }
         }
         stage('DeploySQL') {
