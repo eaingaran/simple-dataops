@@ -36,10 +36,17 @@ pipeline {
         stage('ArchiveUpload') {
             steps {
                 echo 'Deploying tar file to artifactory....'
-                sh 'mvn deploy:deploy-file -DpomFile=pom.xml \
-                      -Dfile=sample-devops-0.0.1.${BUILD_ID}.tar.gz \
-                      -DrepositoryId=central \
-                      -Durl=http://34.219.211.33:8081/artifactory/libs-snapshot-local/'
+                sh 'curl -uadmin:AP3FBGSctQB7PMkRdHSypbQjuVB -T devops-0.0.1.${BUILD_ID}.tar.gz "http://34.219.211.33:8081/artifactory/libs-snapshot-local/xyz/aingaran/dataops/devops-0.0.1.${BUILD_ID}.tar.gz"'
+                try {
+                    sh 'mvn deploy:deploy-file -DpomFile=pom.xml \
+                          -Dfile=sample-devops-0.0.1.${BUILD_ID}.tar.gz \
+                          -DrepositoryId=central \
+                          -Durl=http://34.219.211.33:8081/artifactory/libs-snapshot-local/ \
+                          -Dpackaging=tar.gz'
+                } catch(Exception e)    {
+                    echo e
+                    echo 'couldnt upload via maven deploy'
+                }
             }
         }
         stage('DeploySQL') {
@@ -49,7 +56,12 @@ pipeline {
         }
         stage('DeployRollbackSQL') {
             steps {
-                echo 'Deploying Rollback....'
+                when {
+                    expression { currentBuild.result == 'FAILED' }
+                }
+                steps{
+                    echo 'Deploying Rollback....'
+                }
             }
         }
         stage('TestDatabase') {
