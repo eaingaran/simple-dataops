@@ -37,15 +37,17 @@ pipeline {
             steps {
                 echo 'Deploying tar file to artifactory....'
                 sh 'curl -uadmin:AP3FBGSctQB7PMkRdHSypbQjuVB -T devops-0.0.1.${BUILD_ID}.tar.gz "http://34.219.211.33:8081/artifactory/libs-snapshot-local/xyz/aingaran/dataops/devops-0.0.1.${BUILD_ID}.tar.gz"'
-                try {
-                    sh 'mvn deploy:deploy-file -DpomFile=pom.xml \
-                          -Dfile=sample-devops-0.0.1.${BUILD_ID}.tar.gz \
-                          -DrepositoryId=central \
-                          -Durl=http://34.219.211.33:8081/artifactory/libs-snapshot-local/ \
-                          -Dpackaging=tar.gz'
-                } catch(Exception e)    {
-                    echo e
-                    echo 'couldnt upload via maven deploy'
+                script {
+                    try {
+                        sh 'mvn deploy:deploy-file -DpomFile=pom.xml \
+                              -Dfile=sample-devops-0.0.1.${BUILD_ID}.tar.gz \
+                              -DrepositoryId=central \
+                              -Durl=http://34.219.211.33:8081/artifactory/libs-snapshot-local/ \
+                              -Dpackaging=tar.gz'
+                    } catch(Exception e)    {
+                        echo e
+                        echo 'couldnt upload via maven deploy'
+                    }
                 }
             }
         }
