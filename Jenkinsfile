@@ -57,7 +57,9 @@ pipeline {
         stage('DeploySQL') {
             steps {
                 echo 'Deploying....'
-                isDeploymentSuccess = true
+                script {
+                  isDeploymentSuccess = true
+                }
             }
         }
         stage('DeployRollbackSQL') {
