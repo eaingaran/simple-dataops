@@ -4,6 +4,9 @@ pipeline {
       maven 'maven'
       jdk 'jdk1.8.0'
     }
+    environment {
+        isDeploymentSuccess = false   
+    }
     stages {
         stage('DryRun') {
             steps {
@@ -54,11 +57,12 @@ pipeline {
         stage('DeploySQL') {
             steps {
                 echo 'Deploying....'
+                isDeploymentSuccess = true
             }
         }
         stage('DeployRollbackSQL') {
             when {
-                expression { currentBuild.result == 'FAILED' }
+                expression { isDeploymentSuccess == false }
             }
             steps{
                 echo 'Deploying Rollback....'
