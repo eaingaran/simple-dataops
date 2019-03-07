@@ -1,11 +1,11 @@
 pipeline {
+    environment {
+        isDeploymentSuccess = false   
+    }
     agent any
     tools {
       maven 'maven'
       jdk 'jdk1.8.0'
-    }
-    environment {
-        isDeploymentSuccess = false   
     }
     stages {
         stage('DryRun') {
