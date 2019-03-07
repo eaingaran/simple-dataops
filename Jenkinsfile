@@ -57,15 +57,11 @@ pipeline {
             }
         }
         stage('DeployRollbackSQL') {
-            steps {
-                script  {
-                    when {
-                        expression { currentBuild.result == 'FAILED' }
-                    }
-                    steps{
-                        echo 'Deploying Rollback....'
-                    }
-                }
+            when {
+                expression { currentBuild.result == 'FAILED' }
+            }
+            steps{
+                echo 'Deploying Rollback....'
             }
         }
         stage('TestDatabase') {
