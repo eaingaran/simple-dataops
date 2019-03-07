@@ -44,7 +44,7 @@
             </snapshots>
             <id>central</id>
             <name>maven central</name>
-            <url>http://central.maven.org</url>
+            <url>http://central.maven.org/maven2/</url>
         </repository>
     </repositories>
     <pluginRepositories>
