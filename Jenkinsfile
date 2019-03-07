@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
       maven 'maven'
-      jdk 'jdk8'
+      jdk 'jdk1.8.0'
     }
     stages {
         stage('DryRun') {
