@@ -58,11 +58,13 @@ pipeline {
         }
         stage('DeployRollbackSQL') {
             steps {
-                when {
-                    expression { currentBuild.result == 'FAILED' }
-                }
-                steps{
-                    echo 'Deploying Rollback....'
+                script  {
+                    when {
+                        expression { currentBuild.result == 'FAILED' }
+                    }
+                    steps{
+                        echo 'Deploying Rollback....'
+                    }
                 }
             }
         }
