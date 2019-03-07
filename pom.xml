@@ -1,4 +1,4 @@
-<project 
+r<project 
 	xmlns="http://maven.apache.org/POM/4.0.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
@@ -42,9 +42,9 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>bintray</id>
-            <name>bintray</name>
-            <url>http://jcenter.bintray.com</url>
+            <id>central</id>
+            <name>maven central</name>
+            <url>http://central.maven.org/maven2/</url>
         </repository>
     </repositories>
     <pluginRepositories>
