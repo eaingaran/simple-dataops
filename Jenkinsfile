@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        isDeploymentSuccess = false   
+        isDeploymentSuccess = ''   
     }
     agent any
     tools {
@@ -57,17 +57,21 @@ pipeline {
         stage('DeploySQL') {
             steps {
                 echo 'Deploying....'
+                sh './tools/setup.sh'
                 script {
-                  isDeploymentSuccess = true
+                  isDeploymentSuccess = sh(script: 'python execute_sql.py localhost admin password build/update.sql', returnStdout: true)
                 }
             }
         }
         stage('DeployRollbackSQL') {
             when {
-                expression { isDeploymentSuccess == false }
+                expression { isDeploymentSuccess == 'Failed' }
             }
             steps{
                 echo 'Deploying Rollback....'
+                script {
+                  sh 'python execute_sql.py localhost admin password build/rollback.sql'
+                }
             }
         }
         stage('TestDatabase') {
