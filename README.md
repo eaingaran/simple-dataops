@@ -13,5 +13,5 @@ This is a simple DataOps attempt using Liquibase..
 
 `mvn liquibase:futureRollbackSQL`
 
-`mvn liquibase:generateChangeLog -Dliquibase.diffTypes=data -DoutputChangeLogFile=output.xml'
+`mvn liquibase:generateChangeLog -Dliquibase.diffTypes=data -DoutputChangeLogFile=output.xml`
 
