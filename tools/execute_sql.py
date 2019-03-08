@@ -14,9 +14,6 @@ cursor = mydb.cursor()
 statement = ""
 
 isSuccess = true
-if isSuccess:
-  else:
-    mydb.rollback()l_file = arguements[4]
 
 for line in open(sql_file, 'r'):
     if re.match(r'--', line):  # ignore sql comment lines
