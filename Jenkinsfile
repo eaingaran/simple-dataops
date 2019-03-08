@@ -61,6 +61,8 @@ pipeline {
                 script {
                   isDeploymentSuccess = sh(script: 'python3 tools/execute_sql.py localhost admin password build/update.sql', returnStdout: true)
                 }
+                echo 'deployment success? ' 
+                echo isDeploymentSuccess
             }
         }
         stage('DeployRollbackSQL') {
