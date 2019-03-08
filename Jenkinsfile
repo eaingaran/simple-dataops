@@ -57,7 +57,7 @@ pipeline {
         stage('DeploySQL') {
             steps {
                 echo 'Deploying....'
-                sh './tools/setup.sh'
+                sh 'bash ./tools/setup.sh'
                 script {
                   isDeploymentSuccess = sh(script: 'python execute_sql.py localhost admin password build/update.sql', returnStdout: true)
                 }
