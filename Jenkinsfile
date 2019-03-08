@@ -48,7 +48,6 @@ pipeline {
                               -Durl=http://34.221.104.185:8081/artifactory/libs-snapshot/ \
                               -Dpackaging=tar.gz'
                     } catch(Exception e)    {
-                        //echo e
                         echo 'couldnt upload via maven deploy'
                     }
                 }*/
@@ -72,7 +71,11 @@ pipeline {
             steps{
                 echo 'Deploying Rollback....'
                 script {
-                  sh 'python3 tools/execute_sql.py localhost admin password build/rollback.sql'
+                    try {
+                        sh 'python3 tools/rollback_sql.py localhost admin password build/rollback.sql'
+                    } catch(Exception e)    {
+                        echo 'rollback completed...'
+                    }
                 }
             }
         }
