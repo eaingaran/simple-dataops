@@ -33,11 +33,11 @@ try:
   
   if isSuccess:
     mydb.commit()
-    print("Success")
+    print("Success", end='')
   else:
     mydb.rollback()
-    print("Failed")
+    print("Failed", end='')
     
 except Exception as e:
   isSuccess = False
-  print("Failed")
+  print("Failed", end='')
