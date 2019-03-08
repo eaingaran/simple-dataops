@@ -1,7 +1,7 @@
 import mysql.connector
 import sys
 
-isSuccess = true
+isSuccess = True
 
 try:
   arguements = sys.argv
@@ -27,7 +27,7 @@ try:
           try:
               cursor.execute(statement)
           except (OperationalError, ProgrammingError) as e:
-              isSuccess = false
+              isSuccess = False
               break
           statement = ""
   
@@ -39,5 +39,5 @@ try:
     print("Failed")
     
 except Exception as e:
-  isSuccess = false
+  isSuccess = False
   print("Failed")
