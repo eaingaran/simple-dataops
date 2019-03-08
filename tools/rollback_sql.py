@@ -1,8 +1,6 @@
 import mysql.connector
 import sys
 
-isSuccess = True
-
 try:
   arguements = sys.argv
 
@@ -27,16 +25,8 @@ try:
           try:
               cursor.execute(statement)
           except (OperationalError, ProgrammingError) as e:
-              isSuccess = False
+              pass
           statement = ""
-  
-  if isSuccess:
-    mydb.commit()
-    print("Success", end='')
-  else:
-    mydb.rollback()
-    print("Failed", end='')
-    
+          
 except Exception as e:
-  isSuccess = False
-  print("Failed", end='')
+  pass
