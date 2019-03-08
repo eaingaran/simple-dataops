@@ -59,7 +59,7 @@ pipeline {
                 echo 'Deploying....'
                 sh 'bash ./tools/setup.sh'
                 script {
-                  isDeploymentSuccess = sh(script: 'python tools/execute_sql.py localhost admin password build/update.sql', returnStdout: true)
+                  isDeploymentSuccess = sh(script: 'python3 tools/execute_sql.py localhost admin password build/update.sql', returnStdout: true)
                 }
             }
         }
@@ -70,7 +70,7 @@ pipeline {
             steps{
                 echo 'Deploying Rollback....'
                 script {
-                  sh 'python execute_sql.py localhost admin password build/rollback.sql'
+                  sh 'python3 tools/execute_sql.py localhost admin password build/rollback.sql'
                 }
             }
         }
