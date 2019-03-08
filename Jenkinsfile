@@ -59,7 +59,7 @@ pipeline {
                 echo 'Deploying....'
                 sh 'bash ./tools/setup.sh'
                 script {
-                  isDeploymentSuccess = sh(script: 'python execute_sql.py localhost admin password build/update.sql', returnStdout: true)
+                  isDeploymentSuccess = sh(script: 'python /tools/execute_sql.py localhost admin password build/update.sql', returnStdout: true)
                 }
             }
         }
