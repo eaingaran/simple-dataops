@@ -32,8 +32,9 @@ pipeline {
         stage('RollbackSQLForSuccessfulBuilds') {
             steps   {
                 script  {
-                    desiredVersion = ${ROLLBACK_VERSION}
+                    desiredVersion = "${ROLLBACK_VERSION}"
                     println builds
+                    println desiredVersion
                     
                     for (build in builds)    {
                         if (build != desiredVersion)   {
