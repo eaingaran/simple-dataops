@@ -38,12 +38,14 @@ pipeline {
                             file_url = '"http://34.221.12.98:8081/artifactory/libs-snapshot/xyz/aingaran/dataops/' + file_name + '"'
                             sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz ' + file_url + ' -o ' + file_name
                             sh 'tar -xvzf ' + file_name
-                            sh 'ls'
                             if (isRollbackSuccess.equals('Failed')) {
-                                sh 'python3 tools/rollback_sql.py localhost admin password ' + file_name
+                                sh 'python3 tools/rollback_sql.py localhost admin password build/rollback.sql'
                             } else  {
-                                isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py localhost admin password ' + file_name, returnStdout: true)
+                                isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py localhost admin password build/rollback.sql', returnStdout: true)
                             }
+                            sh 'rm ' + file_name
+                            sh 'rm -rf build/'
+                            sh 'ls'
                         } else  {
                             println "All scripts rolled back"
                             if(isRollbackSuccess.equals("Failed"))    {
