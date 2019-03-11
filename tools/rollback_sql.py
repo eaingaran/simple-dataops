@@ -9,20 +9,20 @@ try:
 
 	# Open database connection
 	db = PyMySQL.connect(
-	arguements[1], #HOST
-	arguements[2], #USER
-	arguements[3], #PASSWORD
-	arguements[4]  #DB_NAME
+		arguements[1], #HOST
+		arguements[2], #USER
+		arguements[3], #PASSWORD
+		arguements[4]  #DB_NAME
 	)
 
 	sql_file = arguements[5]
 
 	with open('execution.log', 'a') as file:
-	file.write("\n\n")
-	file.write("-------------------------------------------------------------------------------------------\n")
-	file.write("Log for SQL Rollback. File Name : '{}'\n".format(sql_file))
-	file.write("-------------------------------------------------------------------------------------------\n")
-	file.flush()
+		file.write("\n\n")
+		file.write("-------------------------------------------------------------------------------------------\n")
+		file.write("Log for SQL Rollback. File Name : '{}'\n".format(sql_file))
+		file.write("-------------------------------------------------------------------------------------------\n")
+		file.flush()
 
 	cursor = db.cursor()
 
