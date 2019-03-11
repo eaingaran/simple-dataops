@@ -12,6 +12,15 @@ try:
     passwd=arguements[3]
   )
 
+  sql_file = arguements[4]
+  
+  with open('execution.log', 'a') as file:
+    file.write("\n\n")
+    file.write("-------------------------------------------------------------------------------------------\n")
+    file.write("Log for SQL Rollback. File Name : '{}'\n".format(sql_file))
+    file.write("-------------------------------------------------------------------------------------------\n")
+    file.flush()
+  
   cursor = mydb.cursor()
 
   statement = ""
@@ -31,6 +40,7 @@ try:
               with open('execution.log', 'a') as file:
                 file.write(e)
                 file.write('\n')
+                file.flush()
               pass
           statement = ""
           
@@ -38,6 +48,7 @@ except Exception as e:
   with open('execution.log', 'a') as file:
     file.write(e)
     file.write('\n')
+    file.flush()
   pass
 
 if isSuccess:
