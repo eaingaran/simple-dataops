@@ -13,7 +13,6 @@ pipeline {
         stage('FindSuccessfullBuilds') {
             steps {
                 script  {
-
                   def job = jenkins.model.Jenkins.instance.getItem("simple-dataops-rollback")
                   job.builds.each {
                       def build = it
@@ -23,9 +22,7 @@ pipeline {
                            }
                       }
                   }
-
-                  builds.unique();
-                  println builds
+                  builds.unique()
                 }
             }
         }
@@ -33,15 +30,22 @@ pipeline {
             steps   {
                 script  {
                     desiredVersion = "${ROLLBACK_VERSION}"
-                    println builds
-                    println desiredVersion
                     
                     for (build in builds)    {
                         if (build != desiredVersion)   {
-                            print "rolling back build "
-                            println build
+                            println "Rolling back build " + build
+                            file_name = 'sample-devops-0.0.1.' + build + '.tar.gz'
+                            sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz "http://34.221.12.98:8081/artifactory/libs-snapshot/xyz/aingaran/dataops/file_name" -o file_name'
+                            if (isRollbackSuccess.equals('Failed')) {
+                                sh 'python3 tools/rollback_sql.py localhost admin password file_name'
+                            } else  {
+                                isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py localhost admin password file_name', returnStdout: true)
+                            }
                         } else  {
-                        println "All scripts rolled back"
+                            println "All scripts rolled back"
+                            if(isRollbackSuccess.equals("Failed"))    {
+                                println "There were few problems while rollback, but that shouldn't cause any issues..."
+                            }
                             break
                         }
                     }
