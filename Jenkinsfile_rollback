@@ -58,5 +58,10 @@ pipeline {
                 }
             }
         }
+        stage('PrintLog')   {
+            steps   {
+                sh 'cat execution.log ||:'
+            }
+        }
     }
 }
