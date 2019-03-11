@@ -51,12 +51,6 @@ pipeline {
                             sh 'ls'
                         } else  {
                             println "All scripts rolled back"
-                            if(isRollbackSuccess.equals('connection failed'))   {
-                                println "A critical error occured. Check log.."
-                                sh 'exit 1'
-                            } else if(isRollbackSuccess.equals("Failed"))    {
-                                println "There were few problems while rollback, but that shouldn't cause any issues..."
-                            }
                             break
                         }
                     }
@@ -66,6 +60,19 @@ pipeline {
         stage('PrintLog')   {
             steps   {
                 sh 'cat execution.log ||:'
+            }
+        }
+        stage('CheckRollbackForFailure') {
+            steps {
+                script  {
+                    if(isRollbackSuccess.equals('connection failed'))   {
+                        println "A critical error occured. Check log.."
+                        sh 'exit 1'
+                    } else if(isRollbackSuccess.equals("Failed"))    {
+                        println "There were few problems while rollback, but that shouldn't cause any issues..."
+                        sh 'exit 0'
+                    }
+                }
             }
         }
     }
