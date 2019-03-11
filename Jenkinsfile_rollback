@@ -1,6 +1,8 @@
 pipeline {
     environment {
         isRollbackSuccess = ''   
+        builds = []
+        desiredVersion = ${ROLLBACK_VERSION}
     }
     agent any
     tools {
@@ -8,26 +10,29 @@ pipeline {
       jdk 'jdk1.8.0'
     }
     stages {
-        stage('FindSuccessfulBuilds') {
+        stage('FindSuccessfullBuilds') {
             steps {
                 script  {
-                  def builds = []
 
                   def job = jenkins.model.Jenkins.instance.getItem("simple-dataops-rollback")
                   job.builds.each {
-                  def build = it
-                  if (it.getResult().toString().equals("SUCCESS")) {
-                      it.badgeActions.each {
-                               builds.add(build.displayName[1..-1])
-                       }
-                  }
+                      def build = it
+                      if (it.getResult().toString().equals("SUCCESS")) {
+                          it.badgeActions.each {
+                                   builds.add(build.displayName[1..-1])
+                           }
+                      }
                   }
 
                   builds.unique();
                   println builds
-                  for(build in builds)  {
-                    println build
-                  }
+                }
+            }
+        }
+        stage('RollbackSQLForSuccessfulBuilds') {
+            steps   {
+                script  {
+                    println builds
                 }
             }
         }
