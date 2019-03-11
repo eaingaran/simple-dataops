@@ -1,8 +1,8 @@
+def builds = []
+def desiredVersion = ${ROLLBACK_VERSION}
 pipeline {
     environment {
-        isRollbackSuccess = ''   
-        builds = []
-        desiredVersion = ${ROLLBACK_VERSION}
+        isRollbackSuccess = ''
     }
     agent any
     tools {
