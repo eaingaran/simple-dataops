@@ -28,6 +28,9 @@ try:
               cursor.execute(statement)
           except (OperationalError, ProgrammingError) as e:
               isSuccess = False
+              with open('execution.log', 'a') as file:
+                file.write(e)
+                file.write('\n')
               break
           statement = ""
   
@@ -40,4 +43,7 @@ try:
     
 except Exception as e:
   isSuccess = False
+  with open('execution.log', 'a') as file:
+    file.write(e)
+    file.write('\n')
   print("Failed", end='')
