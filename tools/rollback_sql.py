@@ -54,7 +54,7 @@ except Exception as e:
   pass
 
 if connectionError:
-  print('connection failed')
+  print('connection failed', end='')
 
 if isSuccess:
   print("Success", end='')
