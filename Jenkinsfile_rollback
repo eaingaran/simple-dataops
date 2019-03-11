@@ -13,7 +13,7 @@ pipeline {
         stage('FindSuccessfullBuilds') {
             steps {
                 script  {
-                  def job = jenkins.model.Jenkins.instance.getItem("simple-dataops-rollback")
+                  def job = jenkins.model.Jenkins.instance.getItem("simple-dataops")
                   job.builds.each {
                       def build = it
                       if (it.getResult().toString().equals("SUCCESS")) {
