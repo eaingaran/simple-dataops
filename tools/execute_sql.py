@@ -12,6 +12,15 @@ try:
     passwd=arguements[3]
   )
 
+  sql_file = arguements[4]
+  
+  with open('execution.log', 'a') as file:
+    file.write("\n\n")
+    file.write("-------------------------------------------------------------------------------------------\n")
+    file.write("Log for SQL Execution. File Name : '{}'\n".format(sql_file))
+    file.write("-------------------------------------------------------------------------------------------\n")
+    file.flush()
+  
   cursor = mydb.cursor()
 
   statement = ""
@@ -31,6 +40,7 @@ try:
               with open('execution.log', 'a') as file:
                 file.write(e)
                 file.write('\n')
+                file.flush()
               break
           statement = ""
   
@@ -46,4 +56,5 @@ except Exception as e:
   with open('execution.log', 'a') as file:
     file.write(e)
     file.write('\n')
+    file.flush()
   print("Failed", end='')
