@@ -1,4 +1,4 @@
-import mysql.connector
+import PyMySQL
 import sys
 
 isSuccess = True
@@ -7,13 +7,15 @@ connectionError = False
 try:
   arguements = sys.argv
 
-  mydb = mysql.connector.connect(
-    host=arguements[1],
-    user=arguements[2],
-    passwd=arguements[3]
+  # Open database connection
+  db = PyMySQL.connect(
+    arguements[1], #HOST
+    arguements[2], #USER
+    arguements[3], #PASSWORD
+    arguements[4]  #DB_NAME
   )
 
-  sql_file = arguements[4]
+  sql_file = arguements[5]
   
   with open('execution.log', 'a') as file:
     file.write("\n\n")
@@ -22,7 +24,7 @@ try:
     file.write("-------------------------------------------------------------------------------------------\n")
     file.flush()
   
-  cursor = mydb.cursor()
+  cursor = db.cursor()
 
   statement = ""
 
@@ -45,6 +47,11 @@ try:
               pass
           statement = ""
           
+  if isSuccess:
+    db.commit()
+  else:
+    db.rollback()
+  db.close()
 except Exception as e:
   connectionError = True
   with open('execution.log', 'a') as file:
