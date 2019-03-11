@@ -84,6 +84,11 @@ pipeline {
                 echo 'Coming Soon....'
             }
         }
+        stage('PrintLog')   {
+            steps   {
+                sh 'cat execution.log ||:'
+            }
+        }
         stage('CheckDepoymentForFailure') {
             when {
                 expression { isDeploymentSuccess == 'Failed' }
@@ -91,11 +96,6 @@ pipeline {
             steps {
                 echo 'SQL Failed to Deploy. SQL rolled back and application not deployed... '
                 sh 'exit 1'
-            }
-        }
-        stage('PrintLog')   {
-            steps   {
-                sh 'cat execution.log ||:'
             }
         }
     }
