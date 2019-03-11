@@ -39,7 +39,7 @@ pipeline {
         stage('ArchiveUpload') {
             steps {
                 echo 'Deploying tar file to artifactory....'
-               // sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz -T sample-devops-0.0.1.${BUILD_ID}.tar.gz "http://34.221.104.185:8081/artifactory/libs-snapshot/xyz/aingaran/dataops/sample-devops-0.0.1.${BUILD_ID}.tar.gz"'
+                sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz -T sample-devops-0.0.1.${BUILD_ID}.tar.gz "http://34.221.12.98:8081/artifactory/libs-snapshot/xyz/aingaran/dataops/sample-devops-0.0.1.${BUILD_ID}.tar.gz"'
                 /*script {
                     try {
                         sh 'mvn deploy:deploy-file -DpomFile=pom.xml \
@@ -82,6 +82,14 @@ pipeline {
         stage('TestDatabase') {
             steps {
                 echo 'Coming Soon....'
+            }
+        }
+        stage('CheckDepoymentForFailure') {
+            when {
+                expression { isDeploymentSuccess == 'Failed' }
+            }
+            steps {
+                echo 'SQL Failed to Deploy. SQL rolled back and application not deployed... '
             }
         }
     }
