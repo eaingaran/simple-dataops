@@ -2,6 +2,7 @@ import mysql.connector
 import sys
 
 isSuccess = True
+connectionError = False
 
 try:
   arguements = sys.argv
@@ -45,11 +46,15 @@ try:
           statement = ""
           
 except Exception as e:
+  connectionError = True
   with open('execution.log', 'a') as file:
     file.write(str(e))
     file.write('\n')
     file.flush()
   pass
+
+if connectionError:
+  print('connection failed')
 
 if isSuccess:
   print("Success", end='')
