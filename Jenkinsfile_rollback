@@ -33,6 +33,16 @@ pipeline {
             steps   {
                 script  {
                     println builds
+                    
+                    for (build in builds)    {
+                        if (build != desiredVersion)   {
+                            print "rolling back build "
+                            println build
+                        } else  {
+                        println "All scripts rolled back"
+                            break
+                        }
+                    }
                 }
             }
         }
