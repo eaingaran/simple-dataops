@@ -36,7 +36,7 @@ pipeline {
                             println "Rolling back build " + build
                             file_name = 'sample-devops-0.0.1.' + build + '.tar.gz'
                             file_url = '"http://34.221.12.98:8081/artifactory/libs-snapshot/xyz/aingaran/dataops/' + file_name + '"'
-                            sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz file_url -o ' + file_name
+                            sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz ' + file_url + ' -o ' + file_name
                             if (isRollbackSuccess.equals('Failed')) {
                                 sh 'python3 tools/rollback_sql.py localhost admin password ' + file_name
                             } else  {
