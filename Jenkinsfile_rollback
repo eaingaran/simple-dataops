@@ -1,5 +1,5 @@
 def builds = []
-def desiredVersion = ${ROLLBACK_VERSION}
+def desiredVersion
 pipeline {
     environment {
         isRollbackSuccess = ''
@@ -32,6 +32,7 @@ pipeline {
         stage('RollbackSQLForSuccessfulBuilds') {
             steps   {
                 script  {
+                    desiredVersion = ${ROLLBACK_VERSION}
                     println builds
                     
                     for (build in builds)    {
