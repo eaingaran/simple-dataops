@@ -39,7 +39,9 @@ pipeline {
                             sh 'rm ' + file_name + ' ||:'
                             sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz ' + file_url + ' -o ' + file_name
                             sh 'tar -xvzf ' + file_name
-                            if (isRollbackSuccess.equals('Failed')) {
+                            if (isRollbackSuccess.equals('connection failed'))  {
+                                break
+                            } else if (isRollbackSuccess.equals('Failed')) {
                                 sh 'python3 tools/rollback_sql.py localhost admin password build/rollback.sql'
                             } else  {
                                 isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py localhost admin password build/rollback.sql', returnStdout: true)
@@ -49,7 +51,10 @@ pipeline {
                             sh 'ls'
                         } else  {
                             println "All scripts rolled back"
-                            if(isRollbackSuccess.equals("Failed"))    {
+                            if(isRollbackSuccess.equals('connection failed'))   {
+                                println "A critical error occured. Check log.."
+                                sh 'exit 1'
+                            } else if(isRollbackSuccess.equals("Failed"))    {
                                 println "There were few problems while rollback, but that shouldn't cause any issues..."
                             }
                             break
