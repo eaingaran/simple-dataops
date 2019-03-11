@@ -93,5 +93,10 @@ pipeline {
                 sh 'exit 1'
             }
         }
+        stage('PrintLog')   {
+            steps   {
+                sh 'cat execution.log ||:'
+            }
+        }
     }
 }
