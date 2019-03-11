@@ -55,8 +55,7 @@ except Exception as e:
 
 if connectionError:
   print('connection failed', end='')
-
-if isSuccess:
+elif isSuccess:
   print("Success", end='')
 else:
   print("Failed", end='')
