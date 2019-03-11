@@ -7,14 +7,15 @@ try:
 	arguements = sys.argv
 
 	# Open database connection
-	db = PyMySQL.connect(
-		arguements[1], #HOST
-		arguements[2], #USER
-		arguements[3], #PASSWORD
-		arguements[4]  #DB_NAME
+	connection = PyMySQL.connect(
+		host=arguements[1], #HOST
+		port=arguements[2], #PORT
+		user=arguements[3], #USER
+		passwd=arguements[4], #PASSWORD
+		db=arguements[5]  #DB_NAME
 	)
 
-	sql_file = arguements[5]
+	sql_file = arguements[6]
 
 	with open('execution.log', 'a') as file:
 		file.write("\n\n")
@@ -23,7 +24,7 @@ try:
 		file.write("-------------------------------------------------------------------------------------------\n")
 		file.flush()
 
-	cursor = db.cursor()
+	cursor = connection.cursor()
 
 	statement = ""
 
@@ -47,12 +48,12 @@ try:
 		statement = ""
 
 	if isSuccess:
-		db.commit()
+		connection.commit()
 		print("Success", end='')
 	else:
-		db.rollback()
+		connection.rollback()
 		print("Failed", end='')
-	db.close()
+	connection.close()
 
 except Exception as e:
 	isSuccess = False
