@@ -38,7 +38,7 @@ try:
           except (OperationalError, ProgrammingError) as e:
               isSuccess = False
               with open('execution.log', 'a') as file:
-                file.write(e)
+                file.write(str(e))
                 file.write('\n')
                 file.flush()
               break
@@ -54,7 +54,7 @@ try:
 except Exception as e:
   isSuccess = False
   with open('execution.log', 'a') as file:
-    file.write(e)
+    file.write(str(e))
     file.write('\n')
     file.flush()
   print("Failed", end='')
