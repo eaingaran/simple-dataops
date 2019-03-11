@@ -49,6 +49,7 @@ pipeline {
                             sh 'rm ' + file_name
                             sh 'rm -rf build/'
                             sh 'ls'
+                            println "isRollbackSuccess value is " + isRollbackSuccess
                         } else  {
                             println "All scripts rolled back"
                             break
