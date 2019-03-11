@@ -13,7 +13,7 @@ pipeline {
                 script  {
                   def builds = []
 
-                  def job = jenkins.model.Jenkins.instance.getItem(JOB-NAME)
+                  def job = jenkins.model.Jenkins.instance.getItem("simple-dataops-rollback")
                   job.builds.each {
                   def build = it
                   if (it.getResult().toString().equals("SUCCESS")) {
