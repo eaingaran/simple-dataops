@@ -11,22 +11,22 @@ pipeline {
         stage('DryRun') {
             steps {
                 echo 'Testing the scrips on a temporary database...'
-                sh 'mvn liquibase:dropAll'
-                sh 'mvn liquibase:update'
-                sh 'mvn liquibase:rollback -Dliquibase.rollbackCount=10000000'
+                sh 'mvn liquibase:dropAll -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${TEST_DB_URL} -Ddb.username=${TEST_DB_USER} -Ddb.password=${TEST_DB_PASSWORD}'
+                sh 'mvn liquibase:update -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${TEST_DB_URL} -Ddb.username=${TEST_DB_USER} -Ddb.password=${TEST_DB_PASSWORD}'
+                sh 'mvn liquibase:rollback -Dliquibase.rollbackCount=10000000 -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${TEST_DB_URL} -Ddb.username=${TEST_DB_USER} -Ddb.password=${TEST_DB_PASSWORD}'
             }
         }
         stage('CreateSQL') {
             steps {
                 echo 'Creating update SQL from scripts..'
-                sh 'mvn clean liquibase:updateSQL'
+                sh 'mvn clean liquibase:updateSQL -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${PROD_DB_URL} -Ddb.username=${PROD_DB_USER} -Ddb.password=${PROD_DB_PASSWORD}'
                 sh 'mkdir build && cp target/liquibase/migrate.sql build/update.sql'
             }
         }
         stage('RollbackSQL') {
             steps {
                 echo 'Creating rollback SQL from scripts..'
-                sh 'mvn clean liquibase:futureRollbackSQL'
+                sh 'mvn clean liquibase:futureRollbackSQL -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${PROD_DB_URL} -Ddb.username=${PROD_DB_USER} -Ddb.password=${PROD_DB_PASSWORD}'
                 sh 'cp target/liquibase/migrate.sql build/rollback.sql'
             }
         }
@@ -58,7 +58,7 @@ pipeline {
                 echo 'Deploying....'
                 sh 'bash ./tools/setup.sh'
                 script {
-                  isDeploymentSuccess = sh(script: 'python3 tools/execute_sql.py localhost admin password build/update.sql', returnStdout: true)
+                  isDeploymentSuccess = sh(script: 'python3 tools/execute_sql.py ${PROD_DB_HOST} ${PROD_DB_PORT} ${PROD_DB_USER} ${PROD_DB_PASSWORD} ${PROD_DB_NAME} build/update.sql', returnStdout: true)
                 }
                 echo 'deployment success? ' 
                 echo isDeploymentSuccess
@@ -72,7 +72,7 @@ pipeline {
                 echo 'Deploying Rollback....'
                 script {
                     try {
-                        sh 'python3 tools/rollback_sql.py localhost admin password build/rollback.sql'
+                        sh 'python3 tools/rollback_sql.py ${PROD_DB_HOST} ${PROD_DB_PORT} ${PROD_DB_USER} ${PROD_DB_PASSWORD} ${PROD_DB_NAME} build/rollback.sql'
                     } catch(Exception e)    {
                         echo 'rollback completed...'
                     }
