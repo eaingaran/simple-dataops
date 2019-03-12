@@ -42,9 +42,9 @@ pipeline {
                             if (isRollbackSuccess.equals('connection failed'))  {
                                 break
                             } else if (isRollbackSuccess.equals('Failed')) {
-                                sh 'python3 tools/rollback_sql.py ${DB_HOST} ${DB_PORT} ${DB_USER} ${DB_PASSWORD} ${DB_NAME} build/rollback.sql'
+                                sh 'python3 tools/rollback_sql.py 34.210.53.126 9000 prod password proddatabase build/rollback.sql'
                             } else  {
-                                isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py ${DB_HOST} ${DB_PORT} ${DB_USER} ${DB_PASSWORD} ${DB_NAME} build/rollback.sql', returnStdout: true)
+                                isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py 34.210.53.126 9000 prod password proddatabase build/rollback.sql', returnStdout: true)
                             }
                             sh 'rm ' + file_name
                             sh 'rm -rf build/'
