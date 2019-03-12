@@ -11,22 +11,23 @@ pipeline {
         stage('DryRun') {
             steps {
                 echo 'Testing the scrips on a temporary database...'
-                sh 'mvn liquibase:dropAll -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${TEST_DB_URL} -Ddb.username=${TEST_DB_USER} -Ddb.password=${TEST_DB_PASSWORD}'
-                sh 'mvn liquibase:update -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${TEST_DB_URL} -Ddb.username=${TEST_DB_USER} -Ddb.password=${TEST_DB_PASSWORD}'
-                sh 'mvn liquibase:rollback -Dliquibase.rollbackCount=10000000 -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${TEST_DB_URL} -Ddb.username=${TEST_DB_USER} -Ddb.password=${TEST_DB_PASSWORD}'
+                sh 'mvn liquibase:dropAll -Ddb.driver=com.mysql.cj.jdbc.Driver -Ddb.url=jdbc:mysql://34.210.53.126:9000/testdatabase -Ddb.username=test -Ddb.password=password'
+                sh 'mvn liquibase:update -Ddb.driver=com.mysql.cj.jdbc.Driver -Ddb.url=jdbc:mysql://34.210.53.126:9000/testdatabase -Ddb.username=test -Ddb.password=password'
+                sh 'mvn liquibase:rollback -Dliquibase.rollbackCount=10000000 -Ddb.driver=com.mysql.cj.jdbc.Driver -Ddb.url=jdbc:mysql://34.210.53.126:9000/testdatabase -Ddb.username=test -Ddb.password=password'
+                sh 'mvn liquibase:update -Ddb.driver=com.mysql.cj.jdbc.Driver -Ddb.url=jdbc:mysql://34.210.53.126:9000/testdatabase -Ddb.username=test -Ddb.password=password'
             }
         }
         stage('CreateSQL') {
             steps {
                 echo 'Creating update SQL from scripts..'
-                sh 'mvn clean liquibase:updateSQL -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${PROD_DB_URL} -Ddb.username=${PROD_DB_USER} -Ddb.password=${PROD_DB_PASSWORD}'
+                sh 'mvn clean liquibase:updateSQL -Ddb.driver=com.mysql.cj.jdbc.Driver -Ddb.url=jdbc:mysql://34.210.53.126:9000/proddatabase -Ddb.username=prod -Ddb.password=password'
                 sh 'mkdir build && cp target/liquibase/migrate.sql build/update.sql'
             }
         }
         stage('RollbackSQL') {
             steps {
                 echo 'Creating rollback SQL from scripts..'
-                sh 'mvn clean liquibase:futureRollbackSQL -Ddb.driver=${MYSQL_DRIVER} -Ddb.url=${PROD_DB_URL} -Ddb.username=${PROD_DB_USER} -Ddb.password=${PROD_DB_PASSWORD}'
+                sh 'mvn clean liquibase:futureRollbackSQL -Ddb.driver=com.mysql.cj.jdbc.Driver -Ddb.url=jdbc:mysql://34.210.53.126:9000/proddatabase -Ddb.username=prod -Ddb.password=password'
                 sh 'cp target/liquibase/migrate.sql build/rollback.sql'
             }
         }
@@ -58,7 +59,7 @@ pipeline {
                 echo 'Deploying....'
                 sh 'bash ./tools/setup.sh'
                 script {
-                  isDeploymentSuccess = sh(script: 'python3 tools/execute_sql.py ${PROD_DB_HOST} ${PROD_DB_PORT} ${PROD_DB_USER} ${PROD_DB_PASSWORD} ${PROD_DB_NAME} build/update.sql', returnStdout: true)
+                  isDeploymentSuccess = sh(script: 'python3 tools/execute_sql.py 34.210.53.126 9000 prod password proddatabase build/update.sql', returnStdout: true)
                 }
                 echo 'deployment success? ' 
                 echo isDeploymentSuccess
@@ -72,7 +73,7 @@ pipeline {
                 echo 'Deploying Rollback....'
                 script {
                     try {
-                        sh 'python3 tools/rollback_sql.py ${PROD_DB_HOST} ${PROD_DB_PORT} ${PROD_DB_USER} ${PROD_DB_PASSWORD} ${PROD_DB_NAME} build/rollback.sql'
+                        sh 'python3 tools/rollback_sql.py 34.210.53.126 9000 prod password proddatabase build/rollback.sql'
                     } catch(Exception e)    {
                         echo 'rollback completed...'
                     }
@@ -95,7 +96,7 @@ pipeline {
             }
             steps {
                 echo 'SQL Failed to Deploy. SQL rolled back and application not deployed... '
-                //sh 'exit 1'
+                sh 'exit 1'
             }
         }
     }
