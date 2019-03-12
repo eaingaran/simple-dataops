@@ -14,5 +14,11 @@
       </column>
     </createTable>
   </changeSet>
-
+  <changeSet author="aingaran" id="2">
+    <insert dbms="mysql"
+            tableName="MASTER_TABLE">
+        <column name="ID" value="1"/>
+        <column name="NAME" type="someone"/>
+    </insert>
+  </changeSet>
 </databaseChangeLog>
