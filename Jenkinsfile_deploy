@@ -95,7 +95,7 @@ pipeline {
             }
             steps {
                 echo 'SQL Failed to Deploy. SQL rolled back and application not deployed... '
-                sh 'exit 1'
+                //sh 'exit 1'
             }
         }
     }
