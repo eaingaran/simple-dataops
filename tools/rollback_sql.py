@@ -1,5 +1,6 @@
 import pymysql
 import sys
+import re
 
 isSuccess = True
 connectionError = False
@@ -10,7 +11,7 @@ try:
 	# Open database connection
 	connection = pymysql.connect(
 		host=arguements[1], #HOST
-		port=arguements[2], #PORT
+		port=int(arguements[2]), #PORT
 		user=arguements[3], #USER
 		passwd=arguements[4], #PASSWORD
 		db=arguements[5]  #DB_NAME
