@@ -38,16 +38,20 @@ try:
 		else:  # when you get a line ending in ';' then exec statement and reset for next statement
 			statement = statement + line
 		#print "\n\n[DEBUG] Executing SQL statement:\n%s" % (statement)
-		try:
-			cursor.execute(statement)
-		except Exception as e:
-			isSuccess = False
-			with open('execution.log', 'a') as file:
-				file.write(str(e))
-				file.write('\n')
-				file.flush()
-			pass
-		statement = ""
+			try:
+				with open('execution.log', 'a') as file:
+					file.write('Executing SQL statement:\n')
+					file.write(statement)
+					file.write('\n')
+					file.flush()
+				cursor.execute(statement)
+			except Exception as e:
+				isSuccess = False
+				with open('execution.log', 'a') as file:
+					file.write(str(e))
+					file.write('\n')
+					file.flush()
+			statement = ""
 
 	if isSuccess:
 		connection.commit()
