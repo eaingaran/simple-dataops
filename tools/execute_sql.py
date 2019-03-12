@@ -39,7 +39,7 @@ try:
 		#print "\n\n[DEBUG] Executing SQL statement:\n%s" % (statement)
 		try:
 			cursor.execute(statement)
-		except (OperationalError, ProgrammingError) as e:
+		except Exception as e:
 			isSuccess = False
 			with open('execution.log', 'a') as file:
 				file.write(str(e))
