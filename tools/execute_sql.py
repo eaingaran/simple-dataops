@@ -1,4 +1,4 @@
-import PyMySQL
+import pymysql
 import sys
 
 isSuccess = True
@@ -7,7 +7,7 @@ try:
 	arguements = sys.argv
 
 	# Open database connection
-	connection = PyMySQL.connect(
+	connection = pymysql.connect(
 		host=arguements[1], #HOST
 		port=arguements[2], #PORT
 		user=arguements[3], #USER
