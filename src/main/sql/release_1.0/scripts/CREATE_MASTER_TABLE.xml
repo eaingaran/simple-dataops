@@ -19,5 +19,10 @@
         <column name="ID" value="1"/>
         <column name="NAME" value="someone"/>
     </insert>
+    <rollback>
+        <sql>
+	    DELETE FROM MASTER_TABLE WHERE ID = 1
+	</sql>
+    </rollback>
   </changeSet>
 </databaseChangeLog>
