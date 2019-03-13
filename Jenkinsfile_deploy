@@ -90,7 +90,7 @@ pipeline {
                 sh 'cat execution.log ||:'
             }
         }
-        stage('CheckDepoymentForFailure') {
+        stage('DeploymentFailureLogger') {
             when {
                 expression { isDeploymentSuccess == 'Failed' }
             }
