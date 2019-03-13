@@ -35,7 +35,7 @@ pipeline {
                         if (build != desiredVersion)   {
                             println "Rolling back build " + build
                             file_name = 'sample-devops-0.0.1.' + build + '.tar.gz'
-                            file_url = '"http://34.210.53.126:8081/artifactory/libs-snapshot/xyz/aingaran/dataops/' + file_name + '"'
+                            file_url = '"http://34.222.234.203:8081/artifactory/libs-snapshot/xyz/aingaran/dataops/' + file_name + '"'
                             sh 'rm ' + file_name + ' ||:'
                             sh 'curl -uadmin:AP3k8uCck9Xxw1GG3i3yz2rq4Kz ' + file_url + ' -o ' + file_name
                             sh 'tar -xvzf ' + file_name
@@ -44,7 +44,7 @@ pipeline {
                             } else if (isRollbackSuccess.equals('Failed')) {
                                 sh 'python3 tools/rollback_sql.py 34.210.53.126 9000 prod password proddatabase build/rollback.sql'
                             } else  {
-                                isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py 34.210.53.126 9000 prod password proddatabase build/rollback.sql', returnStdout: true)
+                                isRollbackSuccess = sh(script: 'python3 tools/rollback_sql.py 34.222.234.203 9000 prod password proddatabase build/rollback.sql', returnStdout: true)
                             }
                             sh 'rm ' + file_name
                             sh 'rm -rf build/'
