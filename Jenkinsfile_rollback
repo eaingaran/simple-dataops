@@ -63,7 +63,7 @@ pipeline {
                 sh 'cat execution.log ||:'
             }
         }
-        stage('CheckRollbackForFailure') {
+        stage('RollbackFailureLogger') {
             when {
                 expression { isRollbackSuccess == 'Failed' || isRollbackSuccess == 'connection failed'}
             }
