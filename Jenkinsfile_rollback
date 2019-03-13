@@ -64,6 +64,9 @@ pipeline {
             }
         }
         stage('CheckRollbackForFailure') {
+            when {
+                expression { isRollbackSuccess == 'Failed' || isRollbackSuccess == 'connection failed'}
+            }
             steps {
                 script  {
                     if(isRollbackSuccess.equals('connection failed'))   {
